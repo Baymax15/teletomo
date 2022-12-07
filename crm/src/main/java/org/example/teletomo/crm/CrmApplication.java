@@ -20,8 +20,9 @@ public class CrmApplication {
 		return new IntercomsMessageHandler() {
 
 			@Override
-			public void handle(String msg) {
+			public String handle(String msg) {
 				log.info("Handled message: {}", msg);
+				return null;
 			}
 			
 		};

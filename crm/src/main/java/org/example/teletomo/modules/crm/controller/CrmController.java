@@ -1,21 +1,31 @@
 package org.example.teletomo.modules.crm.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.example.teletomo.modules.intercoms.service.IntercomsService;
+import javax.servlet.http.HttpServletRequest;
+
+import org.example.teletomo.modules.crm.service.CrmService;
+import org.example.teletomo.modules.intercoms.service.IntercomsProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CrmController {
+	private static final Logger log = LoggerFactory.getLogger(CrmController.class);
 
 	@Autowired
-	IntercomsService intercomsService;
+	CrmService service;
 
 	@Value("${message}")
 	String message;
@@ -23,22 +33,21 @@ public class CrmController {
 	List<String> destinations = Arrays.asList("billing", "email", "inventory", "sms", "voicemail");
 
 	@GetMapping
-	public String launch() {
-		StringBuilder builder = new StringBuilder("Teletomo Application");
-		destinations.forEach(dest -> builder.append(String.format("<br><a href=\"/%s\" target=\"_blank\">%s</a>", dest, dest)));
-		return builder.toString();
+	public List<String> getRoutes(HttpServletRequest request) {
+		log.info("Request: {}", request.getRequestURL());
+		return destinations.stream().map(dest -> request.getRequestURL().append(dest).toString())
+				.collect(Collectors.toList());
 	}
 
-	@GetMapping("/{destination}")
-	public String send(@PathVariable(name = "destination") String destination, @RequestParam(required = false) String msg) {
-		String packet = msg;
-
-		if (!destinations.contains(destination))
-			return String.format("Destination not available: %s", destination);
-		if (msg == null || msg.isEmpty())
-			packet = message;
-
-		intercomsService.sendMessage(destination, packet);
-		return String.format("Sent message %s to destination: %s", packet, destination);
+	@PostMapping("/{destination}")
+	public Map<String, String> send(@PathVariable(name = "destination") String destination, @RequestBody Map<String, String> msg) {
+		Map<String, String> response = new HashMap<String, String>();
+		if (!destinations.contains(destination)) {
+			response.put("Error", String.format("Destination not available: %s", destination));
+			return response;
+		}
+		String res = service.send(destination, (msg == null || msg.isEmpty()) ? message : msg.get("message"));
+		response.put("response", res);
+		return response;
 	}
 }
