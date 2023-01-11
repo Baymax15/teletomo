@@ -5,11 +5,12 @@
 	<parent>
 		<groupId>org.example.teletomo</groupId>
 		<artifactId>teletomo</artifactId>
-		<version>${revision}</version>
+		<version>0.0.1</version>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>intercoms</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>intercoms</name>
 	<description>ActiveMQ Artemis as messaging for teletomo</description>
 

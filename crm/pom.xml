@@ -5,11 +5,12 @@
 	<parent>
 		<groupId>org.example.teletomo</groupId>
 		<artifactId>teletomo</artifactId>
-		<version>${revision}</version>
+		<version>0.0.1</version>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>crm</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>crm</name>
 	<description>CRM Module for teletomo</description>
 
@@ -22,6 +23,7 @@
 		<dependency>
 			<groupId>org.example.teletomo</groupId>
 			<artifactId>intercoms</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 	</dependencies>
 

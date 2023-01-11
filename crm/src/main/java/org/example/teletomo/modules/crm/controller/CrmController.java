@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +27,7 @@ public class CrmController {
 	@Autowired
 	CrmService service;
 
-	@Value("${message}")
+	@Value("${message:msg}")
 	String message;
 
 	List<String> destinations = Arrays.asList("billing", "email", "inventory", "sms", "voicemail");
@@ -45,6 +44,8 @@ public class CrmController {
 			response.put("Error", String.format("Destination not available: %s", destination));
 			return response;
 		}
+		log.info("destination: {} message:{}", destination, msg);
+		
 		String res = service.send(destination, (msg == null || msg.isEmpty()) ? message : msg.get("message"));
 		response.put("response", res);
 		return response;
