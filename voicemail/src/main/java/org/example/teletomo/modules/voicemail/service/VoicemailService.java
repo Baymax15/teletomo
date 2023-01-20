@@ -9,7 +9,7 @@ public class VoicemailService {
 	private static final Logger log = LoggerFactory.getLogger(VoicemailService.class);
 
 	public void sendVoicemail(String message) {
-		log.info("Sending message: {}", message);
+		log.info("sendVoicemail :: message: {}", message);
 	}
 
 }
