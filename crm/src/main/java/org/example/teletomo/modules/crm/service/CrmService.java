@@ -1,5 +1,7 @@
 package org.example.teletomo.modules.crm.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public interface CrmService {
-	public String send(String destination, String message);
+	public JsonNode getHomepageDetails();
 }
