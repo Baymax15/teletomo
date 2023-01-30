@@ -1,5 +1,6 @@
 package org.example.teletomo.modules.email.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public class Email {
     private UUID id;
     private String sender;
     private List<String> recipients;
+    LocalDateTime dateTime;
     private String subject;
     private String message; 
 }
