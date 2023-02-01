@@ -70,7 +70,7 @@ public class EmailService {
             List<String> temp = new ArrayList<>(users);
             Collections.shuffle(temp);
 
-            List<String> recipients = temp.subList(1, (random.nextInt(users.size()) + 1));
+            List<String> recipients = temp.subList(1, (random.nextInt(users.size() - 1) + 2));
 
             initialMails.add(new Email(UUID.randomUUID(),
                     temp.get(0),
