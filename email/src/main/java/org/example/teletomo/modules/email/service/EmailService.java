@@ -1,6 +1,6 @@
 package org.example.teletomo.modules.email.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,7 +75,7 @@ public class EmailService {
             initialMails.add(new Email(UUID.randomUUID(),
                     temp.get(0),
                     recipients,
-                    LocalDateTime.now(),
+                    OffsetDateTime.now(),
                     "Test email subjectline" + i,
                     "Hello from " + temp.get(0)));
         }
