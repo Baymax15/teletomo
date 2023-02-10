@@ -6,7 +6,6 @@ import javax.jms.Message;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class IntercomsHandler {
 	private static final Logger log = LoggerFactory.getLogger(IntercomsHandler.class);
 
-	@Autowired
 	JmsTemplate jmsTemplate;
 
-	@Autowired
 	JsonMessageConverter converter;
+
+	IntercomsHandler(JmsTemplate jmsTemplate, JsonMessageConverter converter) {
+		jmsTemplate.setReceiveTimeout(30 * 1000);
+		this.jmsTemplate = jmsTemplate;
+		this.converter = converter;
+	}
 
 	public void respond(Message request, Object obj) {
 		log.debug("respond :: request: {} obj: {}", request, obj);
@@ -44,7 +47,6 @@ public class IntercomsHandler {
 
 	public JsonNode request(String destination, String action, Object obj) {
 		log.debug("request :: destination: {} action: {} obj: {}", destination, action, obj);
-
 		Message response = jmsTemplate.sendAndReceive(destination, session -> {
 			Message message = converter.toMessage(obj, session);
 			message.setStringProperty("action", action);
